@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  dev:
+    container_name: server-dev
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/app
+  app:
+    container_name: server-app
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      target: prod
+    ports:
+      - "80:8080"
+    command: ./main
