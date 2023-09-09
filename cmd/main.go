@@ -19,7 +19,7 @@ func main() {
 	}
 	s := grpc.NewServer()
 	log.Printf("Starting gRPC server on port: %v", port)
-	pb.RegisterGenerateMessageServiceServer(s, service.NewGenerateMessage())
+	pb.RegisterCommitMessageServiceServer(s, service.NewCommitMessage())
 
 	reflection.Register(s)
 	if err := s.Serve(listener); err != nil {

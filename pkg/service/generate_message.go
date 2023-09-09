@@ -6,28 +6,16 @@ import (
 	"github.com/cocoide/commitify-grpc-server/pkg/pb"
 )
 
-func NewGenerateMessage() pb.GenerateMessageServiceServer {
-	return &generateMessage{}
+func NewCommitMessage() pb.CommitMessageServiceServer {
+	return &commitMessage{}
 }
 
-type generateMessage struct {
-	pb.UnimplementedGenerateMessageServiceServer
+type commitMessage struct {
+	pb.UnimplementedCommitMessageServiceServer
 }
 
-func (s generateMessage) GenerateEnglishCommitMessage(ctx context.Context, req *pb.GenerateMessageRequest) (*pb.GenerateMessageResponse, error) {
-	return &pb.GenerateMessageResponse{
+func (s commitMessage) GenerateCommitMessage(ctx context.Context, req *pb.CommitMessageRequest) (*pb.CommitMessageResponse, error) {
+	return &pb.CommitMessageResponse{
 		Messages: []string{"Feat A", "Add B"},
-	}, nil
-}
-
-func (s generateMessage) GenerateJapaneseCommitMessage(ctx context.Context, req *pb.GenerateMessageRequest) (*pb.GenerateMessageResponse, error) {
-	return &pb.GenerateMessageResponse{
-		Messages: []string{"機能Aを開発", "機能Bを追加"},
-	}, nil
-}
-
-func (s generateMessage) GeneratePrefixFormatCommitMessage(ctx context.Context, req *pb.GenerateMessageRequest) (*pb.GenerateMessageResponse, error) {
-	return &pb.GenerateMessageResponse{
-		Messages: []string{"feat: A", "add: B"},
 	}, nil
 }

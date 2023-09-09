@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+option go_package = "pkg/pb";
+
+package commit_message;
+
+// CommitMessageService provides methods to generate commit messages
+service CommitMessageService {
+    rpc GenerateCommitMessage(CommitMessageRequest) returns (CommitMessageResponse);
+}
+
+// CommitMessageRequest is the request format for generating messages
+message CommitMessageRequest {
+    string inputCode = 1;
+    FormatType format = 2;
+    LanguageType language = 3;
+}
+
+// CommitMessageResponse returns generated commit messages
+message CommitMessageResponse {
+    repeated string messages = 1;
+}
+
+// FormatType specifies the type of commit message to generate
+enum FormatType {
+    EMOJI = 0;
+    PREFIX = 1;
+    NORMAL = 2;
+}
+
+// LanguageType specifies the language of the commit message to generate
+enum LanguageType {
+    ENGLISH =0;
+    JAPANESE =1;
+}
