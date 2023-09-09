@@ -2,12 +2,41 @@ package enum
 
 import "github.com/cocoide/commitify-grpc-server/pkg/pb"
 
+type Language int
+
 const (
-	JAPANESE = pb.LanguageType_JAPANESE
-	ENGLISH  = pb.LanguageType_ENGLISH
+	Japanese Language = iota
+	English
 )
+
+type CodeFormat int
+
 const (
-	EMOJI_FORMAT  = pb.CodeFormatType_EMOJI
-	PREFIX_FORMAT = pb.CodeFormatType_PREFIX
-	NORMAL_FORMAT = pb.CodeFormatType_NORMAL
+	EmojiFormat CodeFormat = iota
+	PrefixFormat
+	NormalFormat
 )
+
+func ConvertPbLanguage(pbLanguage pb.LanguageType) Language {
+	switch pbLanguage {
+	case pb.LanguageType_JAPANESE:
+		return Japanese
+	case pb.LanguageType_ENGLISH:
+		return English
+	default:
+		return Japanese // default
+	}
+}
+
+func ConvertPbCodeFormat(pbCodeFormat pb.CodeFormatType) CodeFormat {
+	switch pbCodeFormat {
+	case pb.CodeFormatType_EMOJI:
+		return EmojiFormat
+	case pb.CodeFormatType_PREFIX:
+		return PrefixFormat
+	case pb.CodeFormatType_NORMAL:
+		return NormalFormat
+	default:
+		return NormalFormat // default
+	}
+}
