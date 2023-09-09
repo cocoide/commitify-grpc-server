@@ -1,41 +1,15 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"net"
 
-	"github.com/cocoide/commitify-grpc-server/pkg/api"
+	"github.com/cocoide/commitify-grpc-server/pkg/pb"
+	"github.com/cocoide/commitify-grpc-server/pkg/service"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
-
-func NewGenerateMessage() *generateMessage {
-	return &generateMessage{}
-}
-
-type generateMessage struct {
-	api.UnimplementedGenerateMessageServiceServer
-}
-
-func (s generateMessage) GenerateEnglishCommitMessage(ctx context.Context, req *api.GenerateMessageRequest) (*api.GenerateMessageResponse, error) {
-	return &api.GenerateMessageResponse{
-		Messages: []string{"Feat A", "Add B"},
-	}, nil
-}
-
-func (s generateMessage) GenerateJapaneseCommitMessage(ctx context.Context, req *api.GenerateMessageRequest) (*api.GenerateMessageResponse, error) {
-	return &api.GenerateMessageResponse{
-		Messages: []string{"機能Aを開発", "機能Bを追加"},
-	}, nil
-}
-
-func (s generateMessage) GeneratePrefixFormatCommitMessage(ctx context.Context, req *api.GenerateMessageRequest) (*api.GenerateMessageResponse, error) {
-	return &api.GenerateMessageResponse{
-		Messages: []string{"feat: A", "add: B"},
-	}, nil
-}
 
 func main() {
 	port := 8080
@@ -45,7 +19,7 @@ func main() {
 	}
 	s := grpc.NewServer()
 	log.Printf("Starting gRPC server on port: %v", port)
-	api.RegisterGenerateMessageServiceServer(s, NewGenerateMessage())
+	pb.RegisterGenerateMessageServiceServer(s, service.NewGenerateMessage())
 
 	reflection.Register(s)
 	if err := s.Serve(listener); err != nil {

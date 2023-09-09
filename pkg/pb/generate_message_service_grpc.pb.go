@@ -4,7 +4,7 @@
 // - protoc             v4.24.2
 // source: generate_message_service.proto
 
-package api
+package pb
 
 import (
 	context "context"
