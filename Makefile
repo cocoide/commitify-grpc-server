@@ -1,4 +1,4 @@
-.PHONY: dev build down mock
+.PHONY: dev build down proto mock
 
 dev:
 	docker-compose up dev
