@@ -3,6 +3,9 @@ module github.com/cocoide/commitify-grpc-server
 go 1.19
 
 require (
+	github.com/golang/mock v1.6.0
+	github.com/joho/godotenv v1.5.1
+	github.com/sashabaranov/go-openai v1.15.2
 	google.golang.org/grpc v1.58.0
 	google.golang.org/protobuf v1.31.0
 )
