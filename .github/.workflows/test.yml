@@ -5,7 +5,9 @@ on:
     branches:
       - main
     paths:
-      - 'internal/**'
+      - 'pkg/**'
+      - '.github/**'
+      - 'proto/**'
 
 jobs:
   test:
