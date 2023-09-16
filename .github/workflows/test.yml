@@ -9,6 +9,9 @@ on:
       - '.github/**'
       - 'proto/**'
 
+env:
+  cache-version: v1
+
 jobs:
   test:
     name: Test
@@ -44,7 +47,12 @@ jobs:
 
       - name: Get dependencies
         if: steps.cache-go.outputs.cache-hit != 'true'
-        run: go get -v -t -d ./...
+        run: |
+          go get -v -t -d ./...
+          if [ -f Gopkg.toml ]; then
+              curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+              dep ensure
+          fi
 
       - name: Test
         run: make test
