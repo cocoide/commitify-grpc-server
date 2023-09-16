@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/cocoide/commitify-grpc-server/pkg/enum"
+	"github.com/cocoide/commitify-grpc-server/pkg/entity"
 	"github.com/cocoide/commitify-grpc-server/pkg/gateway"
 	"github.com/cocoide/commitify-grpc-server/utils"
 )
@@ -42,12 +42,12 @@ func generateEnglishMessage(og gateway.OpenAIGateway, code string) ([]string, er
 	return messages, nil
 }
 
-func (u *CommitMessageUseCase) GenerateNormalMessage(code string, language enum.Language) ([]string, error) {
+func (u *CommitMessageUseCase) GenerateNormalMessage(code string, language entity.LanguageType) ([]string, error) {
 	messages, err := generateEnglishMessage(u.og, code)
 	if err != nil {
 		return nil, err
 	}
-	if language == enum.Japanese {
+	if language == entity.Japanese {
 		messages, err = u.dg.TranslateTextsIntoJapanese(messages)
 		if err != nil {
 			return nil, err
@@ -56,7 +56,7 @@ func (u *CommitMessageUseCase) GenerateNormalMessage(code string, language enum.
 	return messages, nil
 }
 
-func (u *CommitMessageUseCase) GenerateEmojiMessage(code string, language enum.Language) ([]string, error) {
+func (u *CommitMessageUseCase) GenerateEmojiMessage(code string, language entity.LanguageType) ([]string, error) {
 	messages, err := generateEnglishMessage(u.og, code)
 	if err != nil {
 		return []string{}, err
@@ -76,7 +76,7 @@ func (u *CommitMessageUseCase) GenerateEmojiMessage(code string, language enum.L
 	}
 	emojis := strings.Split(strings.ReplaceAll(emojiLine, " ", ""), ",")
 
-	if language == enum.Japanese {
+	if language == entity.Japanese {
 		messages, err = u.dg.TranslateTextsIntoJapanese(messages)
 		if err != nil {
 			return nil, err
@@ -91,7 +91,7 @@ func (u *CommitMessageUseCase) GenerateEmojiMessage(code string, language enum.L
 	return messages, nil
 }
 
-func (u *CommitMessageUseCase) GeneratePrefixMessage(code string, language enum.Language) ([]string, error) {
+func (u *CommitMessageUseCase) GeneratePrefixMessage(code string, language entity.LanguageType) ([]string, error) {
 	messages, err := generateEnglishMessage(u.og, code)
 	prefixMap := make(map[string]string, 6)
 	prefixMap["feat"] = "feature"
@@ -115,10 +115,10 @@ func (u *CommitMessageUseCase) GeneratePrefixMessage(code string, language enum.
 		}
 		messages[i] = prefix + ": " + messages[i]
 	}
-	if language == enum.Japanese {
+	if language == entity.Japanese {
 		messages, err = u.dg.TranslateTextsIntoJapanese(messages)
 		if err != nil {
-			return nil, err
+
 		}
 	}
 	return messages, nil

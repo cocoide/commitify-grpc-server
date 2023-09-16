@@ -1,4 +1,4 @@
-.PHONY: dev build down proto mock
+.PHONY: dev build down proto mock test
 
 dev:
 	docker-compose up dev
@@ -12,3 +12,5 @@ proto:
 	commit_message_service.proto
 mock:
 	go generate ./...
+test:
+	go test ./pkg/usecase/.
