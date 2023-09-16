@@ -30,7 +30,7 @@ func main() {
 	og := gateway.NewOpenAIGateway(ctx)
 	dg := gateway.NewDeeplAPIGateway()
 	cu := usecase.NewCommitMessageUseCaes(og, dg)
-	pb.RegisterCommitMessageServiceServer(s, service.NewCommitMessageServiceServer(og, dg, *cu))
+	pb.RegisterCommitMessageServiceServer(s, service.NewCommitMessageServiceServer(*cu))
 
 	reflection.Register(s)
 	if err := s.Serve(listener); err != nil {
