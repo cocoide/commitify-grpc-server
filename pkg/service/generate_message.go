@@ -9,13 +9,13 @@ import (
 	"github.com/cocoide/commitify-grpc-server/pkg/usecase"
 )
 
-func NewCommitMessageServiceServer(cu usecase.CommitMessageUseCase) pb.CommitMessageServiceServer {
+func NewCommitMessageServiceServer(cu *usecase.CommitMessageUsecase) pb.CommitMessageServiceServer {
 	return &commitMessageServiceServer{cu: cu}
 }
 
 type commitMessageServiceServer struct {
 	pb.UnimplementedCommitMessageServiceServer
-	cu usecase.CommitMessageUseCase
+	cu *usecase.CommitMessageUsecase
 }
 
 func (s commitMessageServiceServer) GenerateCommitMessage(ctx context.Context, req *pb.CommitMessageRequest) (*pb.CommitMessageResponse, error) {

@@ -18,13 +18,13 @@ const (
 
 var messagesRegex = regexp.MustCompile(`^(\d.\s+)|^(-\s+)|^(\s+)`)
 
-type CommitMessageUseCase struct {
+type CommitMessageUsecase struct {
 	og gateway.OpenAIGateway
 	dg gateway.DeeplAPIGateway
 }
 
-func NewCommitMessageUseCaes(og gateway.OpenAIGateway, dg gateway.DeeplAPIGateway) *CommitMessageUseCase {
-	return &CommitMessageUseCase{og: og, dg: dg}
+func NewCommitMessageUsecaes(og gateway.OpenAIGateway, dg gateway.DeeplAPIGateway) *CommitMessageUsecase {
+	return &CommitMessageUsecase{og: og, dg: dg}
 }
 
 func generateEnglishMessage(og gateway.OpenAIGateway, code string) ([]string, error) {
@@ -42,7 +42,7 @@ func generateEnglishMessage(og gateway.OpenAIGateway, code string) ([]string, er
 	return messages, nil
 }
 
-func (u *CommitMessageUseCase) GenerateNormalMessage(code string, language entity.LanguageType) ([]string, error) {
+func (u *CommitMessageUsecase) GenerateNormalMessage(code string, language entity.LanguageType) ([]string, error) {
 	messages, err := generateEnglishMessage(u.og, code)
 	if err != nil {
 		return nil, err
@@ -56,7 +56,7 @@ func (u *CommitMessageUseCase) GenerateNormalMessage(code string, language entit
 	return messages, nil
 }
 
-func (u *CommitMessageUseCase) GenerateEmojiMessage(code string, language entity.LanguageType) ([]string, error) {
+func (u *CommitMessageUsecase) GenerateEmojiMessage(code string, language entity.LanguageType) ([]string, error) {
 	messages, err := generateEnglishMessage(u.og, code)
 	if err != nil {
 		return []string{}, err
@@ -91,7 +91,7 @@ func (u *CommitMessageUseCase) GenerateEmojiMessage(code string, language entity
 	return messages, nil
 }
 
-func (u *CommitMessageUseCase) GeneratePrefixMessage(code string, language entity.LanguageType) ([]string, error) {
+func (u *CommitMessageUsecase) GeneratePrefixMessage(code string, language entity.LanguageType) ([]string, error) {
 	messages, err := generateEnglishMessage(u.og, code)
 	prefixMap := make(map[string]string, 6)
 	prefixMap["feat"] = "feature"

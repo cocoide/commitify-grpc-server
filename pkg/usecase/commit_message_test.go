@@ -10,26 +10,26 @@ import (
 	"testing"
 )
 
-type CommitMessageUseCaseTestSuite struct {
+type CommitMessageUsecaseTestSuite struct {
 	suite.Suite
 	ctrl    *gomock.Controller
 	openai  *mock_gateway.MockOpenAIGateway
 	deepl   *mock_gateway.MockDeeplAPIGateway
-	usecase *usecase.CommitMessageUseCase
+	usecase *usecase.CommitMessageUsecase
 }
 
-func (u *CommitMessageUseCaseTestSuite) SetupTest() {
+func (u *CommitMessageUsecaseTestSuite) SetupTest() {
 	u.ctrl = gomock.NewController(u.T())
 	u.openai = mock_gateway.NewMockOpenAIGateway(u.ctrl)
 	u.deepl = mock_gateway.NewMockDeeplAPIGateway(u.ctrl)
-	u.usecase = usecase.NewCommitMessageUseCaes(u.openai, u.deepl)
+	u.usecase = usecase.NewCommitMessageUsecaes(u.openai, u.deepl)
 }
 
-func (u *CommitMessageUseCaseTestSuite) TearDonwTest() {
+func (u *CommitMessageUsecaseTestSuite) TearDonwTest() {
 	u.ctrl.Finish()
 }
 
-func (u *CommitMessageUseCaseTestSuite) TestGenerateNormalMessage() {
+func (u *CommitMessageUsecaseTestSuite) TestGenerateNormalMessage() {
 	type testcase struct {
 		name     string
 		language entity.LanguageType
@@ -61,5 +61,5 @@ func (u *CommitMessageUseCaseTestSuite) TestGenerateNormalMessage() {
 }
 
 func Test_CommitMessageUseCase(t *testing.T) {
-	suite.Run(t, new(CommitMessageUseCaseTestSuite))
+	suite.Run(t, new(CommitMessageUsecaseTestSuite))
 }
