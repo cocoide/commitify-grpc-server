@@ -1,6 +1,6 @@
 package entity
 
-import "github.com/cocoide/commitify-grpc-server/pkg/pb"
+import pb "github.com/cocoide/commitify-grpc-server/pkg/grpc"
 
 type SeparatedCommitMessage struct {
 	Messages   []string

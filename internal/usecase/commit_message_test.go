@@ -2,9 +2,9 @@ package usecase_test
 
 import (
 	"fmt"
-	mock_gateway "github.com/cocoide/commitify-grpc-server/mock"
-	"github.com/cocoide/commitify-grpc-server/pkg/entity"
-	"github.com/cocoide/commitify-grpc-server/pkg/usecase"
+	"github.com/cocoide/commitify-grpc-server/internal/entity"
+	"github.com/cocoide/commitify-grpc-server/internal/usecase"
+	mock_gateway "github.com/cocoide/commitify-grpc-server/pkg/mock"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/suite"
 	"testing"

@@ -1,8 +1,8 @@
 package usecase
 
 import (
-	"github.com/cocoide/commitify-grpc-server/pkg/entity"
-	"github.com/cocoide/commitify-grpc-server/pkg/gateway"
+	"github.com/cocoide/commitify-grpc-server/internal/entity"
+	"github.com/cocoide/commitify-grpc-server/internal/gateway"
 	"sort"
 	"strings"
 	"sync"

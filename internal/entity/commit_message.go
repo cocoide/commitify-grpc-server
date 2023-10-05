@@ -1,7 +1,7 @@
 package entity
 
 import (
-	"github.com/cocoide/commitify-grpc-server/pkg/pb"
+	pb "github.com/cocoide/commitify-grpc-server/pkg/grpc"
 )
 
 type LanguageType int

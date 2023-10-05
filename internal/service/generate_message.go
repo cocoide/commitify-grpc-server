@@ -3,10 +3,10 @@ package service
 import (
 	"context"
 	"fmt"
+	"github.com/cocoide/commitify-grpc-server/internal/entity"
+	"github.com/cocoide/commitify-grpc-server/internal/usecase"
 
-	"github.com/cocoide/commitify-grpc-server/pkg/entity"
-	"github.com/cocoide/commitify-grpc-server/pkg/pb"
-	"github.com/cocoide/commitify-grpc-server/pkg/usecase"
+	pb "github.com/cocoide/commitify-grpc-server/pkg/grpc"
 )
 
 func NewCommitMessageServiceServer(cu *usecase.CommitMessageUsecase) pb.CommitMessageServiceServer {

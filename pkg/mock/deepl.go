@@ -5,9 +5,9 @@
 package mock_gateway
 
 import (
+	"github.com/cocoide/commitify-grpc-server/internal/gateway"
 	reflect "reflect"
 
-	gateway "github.com/cocoide/commitify-grpc-server/pkg/gateway"
 	gomock "github.com/golang/mock/gomock"
 )
 

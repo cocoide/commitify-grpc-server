@@ -2,11 +2,11 @@ package usecase
 
 import (
 	"fmt"
+	"github.com/cocoide/commitify-grpc-server/internal/entity"
+	"github.com/cocoide/commitify-grpc-server/internal/gateway"
 	"regexp"
 	"strings"
 
-	"github.com/cocoide/commitify-grpc-server/pkg/entity"
-	"github.com/cocoide/commitify-grpc-server/pkg/gateway"
 	"github.com/cocoide/commitify-grpc-server/utils"
 )
 
