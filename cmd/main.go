@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/cocoide/commitify-grpc-server/internal/gateway"
-	"github.com/cocoide/commitify-grpc-server/internal/service"
+	"github.com/cocoide/commitify-grpc-server/internal/handler"
 	"github.com/cocoide/commitify-grpc-server/internal/usecase"
 	"log"
 	"net"
@@ -31,8 +31,8 @@ func main() {
 	dg := gateway.NewDeeplAPIGateway()
 	cu := usecase.NewCommitMessageUsecaes(og, dg)
 	su := usecase.NewSeparateCommitUsecaes(og, dg, cu)
-	pb.RegisterCommitMessageServiceServer(s, service.NewCommitMessageServiceServer(cu))
-	pb.RegisterSeparateCommitServiceServer(s, service.NewSeparateCommitServer(su))
+	pb.RegisterCommitMessageServiceServer(s, handler.NewCommitMessageServiceServer(cu))
+	pb.RegisterSeparateCommitServiceServer(s, handler.NewSeparateCommitServer(su))
 
 	reflection.Register(s)
 	if err := s.Serve(listener); err != nil {

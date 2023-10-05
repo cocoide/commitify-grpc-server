@@ -1,8 +1,8 @@
-package service
+package handler
 
 import (
 	"context"
-	"github.com/cocoide/commitify-grpc-server/internal/entity"
+	entity2 "github.com/cocoide/commitify-grpc-server/internal/domain/entity"
 	"github.com/cocoide/commitify-grpc-server/internal/usecase"
 	pb "github.com/cocoide/commitify-grpc-server/pkg/grpc"
 )
@@ -17,13 +17,13 @@ type separateCommitServer struct {
 }
 
 func (s *separateCommitServer) GenerateMultipleCommitMessage(ctx context.Context, req *pb.SeparateCommitRequest) (*pb.SeparateCommitResponse, error) {
-	var fileChanges []entity.FileChange
+	var fileChanges []entity2.FileChange
 
 	for _, v := range req.FileChanges {
-		fileChanges = append(fileChanges, entity.ConvertPbToFileChange(v))
+		fileChanges = append(fileChanges, entity2.ConvertPbToFileChange(v))
 	}
-	format := entity.ConvertPbCodeFormatToEntity(req.CodeFormat)
-	language := entity.ConvertPbLanguageToEntity(req.Language)
+	format := entity2.ConvertPbCodeFormatToEntity(req.CodeFormat)
+	language := entity2.ConvertPbLanguageToEntity(req.Language)
 
 	commitMessages, err := s.su.GenerateMultipleFileMessages(fileChanges, format, language)
 	if err != nil {

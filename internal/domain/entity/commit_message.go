@@ -26,3 +26,14 @@ func ConvertPbLanguageToEntity(pbLanguage pb.LanguageType) LanguageType {
 func ConvertPbCodeFormatToEntity(pbCodeFormat pb.CodeFormatType) CodeFormatType {
 	return CodeFormatType(pbCodeFormat)
 }
+
+func (l LanguageType) ConvertToDeeplType() string {
+	switch l {
+	case Japanese:
+		return "JA"
+	case English:
+		return "EN"
+	default:
+		return ""
+	}
+}

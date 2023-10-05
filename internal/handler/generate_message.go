@@ -1,9 +1,9 @@
-package service
+package handler
 
 import (
 	"context"
 	"fmt"
-	"github.com/cocoide/commitify-grpc-server/internal/entity"
+	"github.com/cocoide/commitify-grpc-server/internal/domain/entity"
 	"github.com/cocoide/commitify-grpc-server/internal/usecase"
 
 	pb "github.com/cocoide/commitify-grpc-server/pkg/grpc"

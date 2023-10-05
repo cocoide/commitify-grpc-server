@@ -2,7 +2,7 @@ package usecase_test
 
 import (
 	"fmt"
-	"github.com/cocoide/commitify-grpc-server/internal/entity"
+	"github.com/cocoide/commitify-grpc-server/internal/domain/entity"
 	"github.com/cocoide/commitify-grpc-server/internal/usecase"
 	mock_gateway "github.com/cocoide/commitify-grpc-server/pkg/mock"
 	"github.com/golang/mock/gomock"
