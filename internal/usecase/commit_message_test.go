@@ -13,16 +13,16 @@ import (
 type CommitMessageUsecaseTestSuite struct {
 	suite.Suite
 	ctrl    *gomock.Controller
-	openai  *mock_gateway.MockOpenAIGateway
-	deepl   *mock_gateway.MockDeeplAPIGateway
+	nlp     *mock_gateway.MockNLPService
+	lang    *mock_gateway.MockLangService
 	usecase *usecase.CommitMessageUsecase
 }
 
 func (u *CommitMessageUsecaseTestSuite) SetupTest() {
 	u.ctrl = gomock.NewController(u.T())
-	u.openai = mock_gateway.NewMockOpenAIGateway(u.ctrl)
-	u.deepl = mock_gateway.NewMockDeeplAPIGateway(u.ctrl)
-	u.usecase = usecase.NewCommitMessageUsecaes(u.openai, u.deepl)
+	u.nlp = mock_gateway.NewMockNLPService(u.ctrl)
+	u.lang = mock_gateway.NewMockLangService(u.ctrl)
+	u.usecase = usecase.NewCommitMessageUsecaes(u.nlp, u.lang)
 }
 
 func (u *CommitMessageUsecaseTestSuite) TearDonwTest() {
@@ -41,9 +41,9 @@ func (u *CommitMessageUsecaseTestSuite) TestGenerateNormalMessage() {
 	tests := []testcase{
 		{"OK", entity.English, nil,
 			func() {
-				u.openai.EXPECT().
+				u.nlp.EXPECT().
 					GetAnswerFromPrompt(fmt.Sprintf(usecase.NormalMessagePrompt, code)).AnyTimes()
-				u.deepl.EXPECT().
+				u.lang.EXPECT().
 					TranslateTextsIntoJapanese(gomock.Any()).AnyTimes()
 			},
 		},
