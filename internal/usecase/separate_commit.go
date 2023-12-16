@@ -1,21 +1,21 @@
 package usecase
 
 import (
-	"github.com/cocoide/commitify-grpc-server/pkg/entity"
-	"github.com/cocoide/commitify-grpc-server/pkg/gateway"
+	"github.com/cocoide/commitify-grpc-server/internal/domain/entity"
+	"github.com/cocoide/commitify-grpc-server/internal/domain/service"
 	"sort"
 	"strings"
 	"sync"
 )
 
 type SeparateCommitUsecase struct {
-	og gateway.OpenAIGateway
-	dg gateway.DeeplAPIGateway
-	cu *CommitMessageUsecase
+	nlp  service.NLPService
+	lang service.LangService
+	cu   *CommitMessageUsecase
 }
 
-func NewSeparateCommitUsecaes(og gateway.OpenAIGateway, dg gateway.DeeplAPIGateway, cu *CommitMessageUsecase) *SeparateCommitUsecase {
-	return &SeparateCommitUsecase{og: og, dg: dg, cu: cu}
+func NewSeparateCommitUsecaes(nlp service.NLPService, lang service.LangService, cu *CommitMessageUsecase) *SeparateCommitUsecase {
+	return &SeparateCommitUsecase{nlp: nlp, lang: lang, cu: cu}
 }
 
 func (u *SeparateCommitUsecase) GenerateMultipleFileMessages(changes []entity.FileChange, format entity.CodeFormatType, language entity.LanguageType) ([]entity.SeparatedCommitMessage, error) {

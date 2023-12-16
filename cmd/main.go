@@ -3,13 +3,13 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/cocoide/commitify-grpc-server/internal/gateway"
+	"github.com/cocoide/commitify-grpc-server/internal/handler"
+	"github.com/cocoide/commitify-grpc-server/internal/usecase"
 	"log"
 	"net"
 
-	"github.com/cocoide/commitify-grpc-server/pkg/gateway"
-	"github.com/cocoide/commitify-grpc-server/pkg/pb"
-	"github.com/cocoide/commitify-grpc-server/pkg/service"
-	"github.com/cocoide/commitify-grpc-server/pkg/usecase"
+	pb "github.com/cocoide/commitify-grpc-server/pkg/grpc"
 	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -31,8 +31,8 @@ func main() {
 	dg := gateway.NewDeeplAPIGateway()
 	cu := usecase.NewCommitMessageUsecaes(og, dg)
 	su := usecase.NewSeparateCommitUsecaes(og, dg, cu)
-	pb.RegisterCommitMessageServiceServer(s, service.NewCommitMessageServiceServer(cu))
-	pb.RegisterSeparateCommitServiceServer(s, service.NewSeparateCommitServer(su))
+	pb.RegisterCommitMessageServiceServer(s, handler.NewCommitMessageServiceServer(cu))
+	pb.RegisterSeparateCommitServiceServer(s, handler.NewSeparateCommitServer(su))
 
 	reflection.Register(s)
 	if err := s.Serve(listener); err != nil {

@@ -2,22 +2,18 @@ package gateway
 
 import (
 	"context"
+	"github.com/cocoide/commitify-grpc-server/internal/domain/service"
 	"os"
 
 	"github.com/sashabaranov/go-openai"
 )
-
-//go:generate mockgen -source=openai.go -destination=../../mock/openai.go
-type OpenAIGateway interface {
-	GetAnswerFromPrompt(prompt string) (string, error)
-}
 
 type openAIGateway struct {
 	client *openai.Client
 	ctx    context.Context
 }
 
-func NewOpenAIGateway(ctx context.Context) OpenAIGateway {
+func NewOpenAIGateway(ctx context.Context) service.NLPService {
 	client := openai.NewClient(os.Getenv("GPT_API_KEY"))
 	return &openAIGateway{client: client, ctx: ctx}
 }

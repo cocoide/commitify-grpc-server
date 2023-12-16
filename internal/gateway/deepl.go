@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/cocoide/commitify-grpc-server/internal/domain/entity"
+	"github.com/cocoide/commitify-grpc-server/internal/domain/service"
 	"io"
 	"net/http"
 	"os"
@@ -16,21 +18,15 @@ const (
 	Japanese Language = "JA"
 )
 
-//go:generate mockgen -source=deepl.go -destination=../../mock/deepl.go
-type DeeplAPIGateway interface {
-	TranslateTexts(texts []string, into Language) ([]string, error)
-	TranslateTextsIntoJapanese(texts []string) ([]string, error)
-}
-
 type deeplAPIGateway struct {
 }
 
-func NewDeeplAPIGateway() DeeplAPIGateway {
+func NewDeeplAPIGateway() service.LangService {
 	return &deeplAPIGateway{}
 }
 
 func (d *deeplAPIGateway) TranslateTextsIntoJapanese(texts []string) ([]string, error) {
-	translated, err := d.TranslateTexts(texts, Japanese)
+	translated, err := d.TranslateTexts(texts, entity.Japanese)
 	if err != nil {
 		return []string{}, err
 	}
@@ -44,13 +40,14 @@ type TranslationResponse struct {
 	} `json:"translations"`
 }
 
-func (d *deeplAPIGateway) TranslateTexts(texts []string, into Language) ([]string, error) {
+func (d *deeplAPIGateway) TranslateTexts(texts []string, into entity.LanguageType) ([]string, error) {
 	result := make([]string, len(texts))
 	authKey := os.Getenv("DEEPL_API_KEY")
 	apiUrl := "https://api-free.deepl.com/v2/translate"
+	targetLang := into.ConvertToDeeplType()
 	data := map[string]interface{}{
 		"text":        texts,
-		"target_lang": string(into),
+		"target_lang": targetLang,
 	}
 	jsonData, err := json.Marshal(data)
 	if err != nil {

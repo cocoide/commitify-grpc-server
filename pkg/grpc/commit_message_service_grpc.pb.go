@@ -4,7 +4,7 @@
 // - protoc             v4.24.2
 // source: commit_message_service.proto
 
-package pb
+package grpc
 
 import (
 	context "context"

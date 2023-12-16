@@ -1,10 +1,10 @@
-package service
+package handler
 
 import (
 	"context"
-	"github.com/cocoide/commitify-grpc-server/pkg/entity"
-	"github.com/cocoide/commitify-grpc-server/pkg/pb"
-	"github.com/cocoide/commitify-grpc-server/pkg/usecase"
+	"github.com/cocoide/commitify-grpc-server/internal/domain/entity"
+	"github.com/cocoide/commitify-grpc-server/internal/usecase"
+	pb "github.com/cocoide/commitify-grpc-server/pkg/grpc"
 )
 
 func NewSeparateCommitServer(su *usecase.SeparateCommitUsecase) pb.SeparateCommitServiceServer {

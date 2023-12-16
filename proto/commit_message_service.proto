@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "pkg/pb";
+option go_package = "pkg/grpc";
 
 package commit_message;
 

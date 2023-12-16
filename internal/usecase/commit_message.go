@@ -2,11 +2,11 @@ package usecase
 
 import (
 	"fmt"
+	"github.com/cocoide/commitify-grpc-server/internal/domain/entity"
+	"github.com/cocoide/commitify-grpc-server/internal/domain/service"
 	"regexp"
 	"strings"
 
-	"github.com/cocoide/commitify-grpc-server/pkg/entity"
-	"github.com/cocoide/commitify-grpc-server/pkg/gateway"
 	"github.com/cocoide/commitify-grpc-server/utils"
 )
 
@@ -19,21 +19,21 @@ const (
 var messagesRegex = regexp.MustCompile(`^(\d.\s+)|^(-\s+)|^(\s+)`)
 
 type CommitMessageUsecase struct {
-	og gateway.OpenAIGateway
-	dg gateway.DeeplAPIGateway
+	nlp  service.NLPService
+	lang service.LangService
 }
 
-func NewCommitMessageUsecaes(og gateway.OpenAIGateway, dg gateway.DeeplAPIGateway) *CommitMessageUsecase {
-	return &CommitMessageUsecase{og: og, dg: dg}
+func NewCommitMessageUsecaes(nlp service.NLPService, lang service.LangService) *CommitMessageUsecase {
+	return &CommitMessageUsecase{nlp: nlp, lang: lang}
 }
 
-func generateEnglishMessage(og gateway.OpenAIGateway, code string) ([]string, error) {
+func generateEnglishMessage(nlp service.NLPService, code string) ([]string, error) {
 	maxCodeLength := 200
 	if len(code) > maxCodeLength {
 		code = code[:maxCodeLength]
 	}
 	prompt := fmt.Sprintf(NormalMessagePrompt, code)
-	result, err := og.GetAnswerFromPrompt(prompt)
+	result, err := nlp.GetAnswerFromPrompt(prompt)
 	if err != nil {
 		return nil, err
 	}
@@ -43,12 +43,12 @@ func generateEnglishMessage(og gateway.OpenAIGateway, code string) ([]string, er
 }
 
 func (u *CommitMessageUsecase) GenerateNormalMessage(code string, language entity.LanguageType) ([]string, error) {
-	messages, err := generateEnglishMessage(u.og, code)
+	messages, err := generateEnglishMessage(u.nlp, code)
 	if err != nil {
 		return nil, err
 	}
 	if language == entity.Japanese {
-		messages, err = u.dg.TranslateTextsIntoJapanese(messages)
+		messages, err = u.lang.TranslateTextsIntoJapanese(messages)
 		if err != nil {
 			return nil, err
 		}
@@ -57,7 +57,7 @@ func (u *CommitMessageUsecase) GenerateNormalMessage(code string, language entit
 }
 
 func (u *CommitMessageUsecase) GenerateEmojiMessage(code string, language entity.LanguageType) ([]string, error) {
-	messages, err := generateEnglishMessage(u.og, code)
+	messages, err := generateEnglishMessage(u.nlp, code)
 	if err != nil {
 		return []string{}, err
 	}
@@ -70,14 +70,14 @@ func (u *CommitMessageUsecase) GenerateEmojiMessage(code string, language entity
 	emojiMap["⚡️"] = "performance"
 	emojiMap["🗑️"] = "delete"
 	prompt := fmt.Sprintf(EmojiMessagePrompt, messages, emojiMap)
-	emojiLine, err := u.og.GetAnswerFromPrompt(prompt)
+	emojiLine, err := u.nlp.GetAnswerFromPrompt(prompt)
 	if err != nil {
 		return nil, err
 	}
 	emojis := strings.Split(strings.ReplaceAll(emojiLine, " ", ""), ",")
 
 	if language == entity.Japanese {
-		messages, err = u.dg.TranslateTextsIntoJapanese(messages)
+		messages, err = u.lang.TranslateTextsIntoJapanese(messages)
 		if err != nil {
 			return nil, err
 		}
@@ -92,7 +92,7 @@ func (u *CommitMessageUsecase) GenerateEmojiMessage(code string, language entity
 }
 
 func (u *CommitMessageUsecase) GeneratePrefixMessage(code string, language entity.LanguageType) ([]string, error) {
-	messages, err := generateEnglishMessage(u.og, code)
+	messages, err := generateEnglishMessage(u.nlp, code)
 	prefixMap := make(map[string]string, 6)
 	prefixMap["feat"] = "feature"
 	prefixMap["fix"] = "bugfix"
@@ -101,7 +101,7 @@ func (u *CommitMessageUsecase) GeneratePrefixMessage(code string, language entit
 	prefixMap["perf"] = "performance"
 	prefixMap["chore"] = "unimportant"
 	prompt := fmt.Sprintf(PrefixMessagePrompt, messages, prefixMap)
-	prefixLine, err := u.og.GetAnswerFromPrompt(prompt)
+	prefixLine, err := u.nlp.GetAnswerFromPrompt(prompt)
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +116,7 @@ func (u *CommitMessageUsecase) GeneratePrefixMessage(code string, language entit
 		messages[i] = prefix + ": " + messages[i]
 	}
 	if language == entity.Japanese {
-		messages, err = u.dg.TranslateTextsIntoJapanese(messages)
+		messages, err = u.lang.TranslateTextsIntoJapanese(messages)
 		if err != nil {
 
 		}
